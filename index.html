@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+<TITLE>webaudio test</TITLE>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<SCRIPT src="js/jquery-1.10.1.min.js"></SCRIPT>
+<SCRIPT src="js/dat.gui.min.js"></SCRIPT>
+<SCRIPT src="js/CS.js"></SCRIPT>
+<SCRIPT src="js/audio.js"></SCRIPT>
+</HEAD>
+<BODY>
+
+<div id="display"> reading head position is ramped to 
+<h1 id="delayLength">...</h1>
+in <h1 id="duration">...</h1> seconds.
+</div>
+
+<canvas id="delayPosition"></canvas>
+
+<div id="anchor">
+	<div id="comment">
+		<h1> sinewave sent through two feedback loops </h1>
+		<p> change the frequency and gain of the sinewave with the GUI in the top right corner. </p>
+		<p> the position in the delaylines is changed over time automatically. </p>
+	</div>
+</div>
+</BODY>
+</HTML>
