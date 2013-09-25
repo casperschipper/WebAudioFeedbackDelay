@@ -18,7 +18,7 @@ $(document).ready(function() {
 	    alert('Web Audio API is not supported in this browser');
 	  }
 
-	  log(context);
+	  console.log(context);
 
 	  // ok let's create the osc
 
@@ -36,7 +36,7 @@ $(document).ready(function() {
 	 }); // create a fader for frequency in the gui.
 	
 	 var canvas = document.getElementById('delayPosition');
-	log(canvas);
+	console.log(canvas);
 	
 	var graphContext = canvas.getContext('2d');
 
@@ -103,8 +103,8 @@ var DynamicFeedbackDelay = function() {
 	delay.connect(output); 
 
 	this.connect = function(target) { // instance function to connect output to something
-		log(typeof(target)+"this is the typeof target !");
-		log("target = "+ target);
+		console.log(typeof(target)+"this is the typeof target !");
+		console.log("target = "+ target);
 		output.connect(target);
 	}
 
@@ -114,7 +114,7 @@ var DynamicFeedbackDelay = function() {
 
 	function scheduler(delay) { // this is a scheduler fu
 		var target = CS.choose([0,1.,2.]); // target is the position in the delayline;
-		var duration = CS.choose([10,1000,2000]); // duration is ramp length in time;
+		var duration = CS.choose([0,1000,2000]); // duration is ramp length in time;
 
 		$("#delayLength").text(prettyFloat(duration)/1000.0);
 		$("#duration").text(prettyFloat(target));
@@ -132,6 +132,13 @@ var DynamicFeedbackDelay = function() {
 	scheduler(delay);
 }
 
+var Panner = function() {
+	this.input = context.createGainNode();
+	var panNode = context.createPanner();
+	panNode.setPosition(CS.rv(-10,10),3,-0.5);
+	panNode.connect(context.destination);
+}
+
 var playSineWave = function () {
 	this.patch = {
 		SinOsc : context.createOscillator(),
@@ -140,7 +147,12 @@ var playSineWave = function () {
 		DynDelay2 : new DynamicFeedbackDelay(),
 		DynDelay3 : new DynamicFeedbackDelay(),
 		DynDelay4 : new DynamicFeedbackDelay(),
-		DynDelay5 : new DynamicFeedbackDelay()
+		DynDelay5 : new DynamicFeedbackDelay(),
+		Pan1 : new Panner(),
+		Pan2 : new Panner(),
+		Pan3 : new Panner(),
+		Pan4 : new Panner(),
+		Pan5 : new Panner()
 	};
 
 	this.frequency = 60; // setting defaults
@@ -154,7 +166,7 @@ var playSineWave = function () {
 	this.patch.Gain.connect(context.destination);
 
 	this.patch.SinOsc.connect(this.patch.DynDelay1.input);
-	this.patch.DynDelay1.connect(this.patch.Gain);
+	this.patch.DynDelay1.connect(this.patch.Pan1.input);
 	this.patch.DynDelay1.connect(this.patch.DynDelay2.input);
 	this.patch.DynDelay2.connect(this.patch.Gain);
 	this.patch.DynDelay2.connect(this.patch.DynDelay3.input);
