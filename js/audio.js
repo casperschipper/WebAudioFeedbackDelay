@@ -54,7 +54,7 @@ $(document).ready(function() {
 		graphContext.clearRect(0, 0, canvas.width, canvas.height);
 
 		
-		var position = SineWave.patch.Delay.delayTime.value;
+		var position = 0//SineWave.patch.Delay.delayTime.value;
 		var myRectangle = {
 			x : (position / 5.0) * 800.0,
 			y : 0,
@@ -64,7 +64,7 @@ $(document).ready(function() {
 		};
         drawRectangle(myRectangle, graphContext);
         
-        position = SineWave.patch.Delay2.delayTime.value;
+        position = 0//SineWave.patch.Delay2.delayTime.value;
 
         myRectangle.x = (position / 5.0) * 800.0;
         myRectangle.y += 20;
@@ -87,81 +87,34 @@ $(document).ready(function() {
 	}
 });
 
-var playSineWave = function () {
-	this.patch = {
-		SinOsc : context.createOscillator(),
-		Delay : context.createDelayNode(10),
-		Delay2 : context.createDelayNode(10),
-		Gain : context.createGainNode(),
-		FBGain : context.createGainNode(),
-		FBGain2 : context.createGainNode()
-	};
-
-	this.frequency = 35; // setting defaults
-	this.gain = 0.1;
-
-	this.patch.FBGain.gain.value = -0.89; // feedback gain.
-	this.patch.FBGain2.gain.value = -0.89;
-
-	this.patch.Gain.gain.value = this.gain;
-	this.patch.SinOsc.frequency.value = CS.mtof(35);
-	this.patch.SinOsc.connect(this.patch.Gain);
-	
-	this.patch.Gain.connect(this.patch.Delay);
-	this.patch.Delay.connect(this.patch.FBGain);
-	this.patch.FBGain.connect(this.patch.Delay);
-	this.patch.FBGain.connect(context.destination);
-
-	this.patch.FBGain.connect(this.patch.Delay2);
-	this.patch.Delay2.connect(this.patch.FBGain2);
-	this.patch.FBGain2.connect(this.patch.Delay2);
-	this.patch.FBGain2.connect(context.destination);
-	this.patch.SinOsc.noteOn(0);
-
-	function schedular(delay) {
-		var target = CS.choose([0,0.1,0.2,1.0,CS.rv(0,1)]); // target is the position in the delayline;
-		var duration = CS.choose([0,100,200,1000,3000]); // duration is ramp length in time;
-
-		$("#delayLength").text(prettyFloat(duration)/1000.0);
-		$("#duration").text(prettyFloat(target));
-		nextRamp(delay,target,duration,schedular);
-	}
-
-	function nextRamp(delay,target,duration,callback) {
-		delay.delayTime.linearRampToValueAtTime(target, context.currentTime + (duration/1000.0));
-		setTimeout(function() {
-			callback(delay);
-		}
-		,duration);
-	}
-
-	schedular(this.patch.Delay);
-	schedular(this.patch.Delay2);
-}
-
-var dynamicFeedbackDelay = function() {
+var DynamicFeedbackDelay = function() {
 	this.input = context.createGainNode();
 	var output = context.createGainNode(),
 		delay = context.createDelayNode(5),
 		fbgain = context.createGainNode();
 
 	delay.delayTime.value = 0.5;
-	fbgain.gain.value = 0.89;
+	fbgain.gain.value = -0.75;
 
 	this.input.connect(delay); //
 	
 	delay.connect(fbgain); // feedback loop
 	fbgain.connect(delay); 
-
-	delay.connect(output); // connect the delay to the output
+	delay.connect(output); 
 
 	this.connect = function(target) { // instance function to connect output to something
+		log(typeof(target)+"this is the typeof target !");
+		log("target = "+ target);
 		output.connect(target);
 	}
 
+	this.delayTime = function() {
+		return delay.delayTime.value;
+	}
+
 	function scheduler(delay) { // this is a scheduler fu
-		var target = CS.choose([0,0.1,0.2,1.0,CS.rv(0,1)]); // target is the position in the delayline;
-		var duration = CS.choose([0,100,200,1000,3000]); // duration is ramp length in time;
+		var target = CS.choose([0,1.,2.]); // target is the position in the delayline;
+		var duration = CS.choose([10,1000,2000]); // duration is ramp length in time;
 
 		$("#delayLength").text(prettyFloat(duration)/1000.0);
 		$("#duration").text(prettyFloat(target));
@@ -176,7 +129,40 @@ var dynamicFeedbackDelay = function() {
 		,duration);
 	}
 
-	schedular(delay);
+	scheduler(delay);
+}
+
+var playSineWave = function () {
+	this.patch = {
+		SinOsc : context.createOscillator(),
+		Gain : context.createGainNode(),
+		DynDelay1 : new DynamicFeedbackDelay(),
+		DynDelay2 : new DynamicFeedbackDelay(),
+		DynDelay3 : new DynamicFeedbackDelay(),
+		DynDelay4 : new DynamicFeedbackDelay(),
+		DynDelay5 : new DynamicFeedbackDelay()
+	};
+
+	this.frequency = 60; // setting defaults
+	this.gain = 0.1;
+
+	this.patch.Gain.gain.value = this.gain;
+	this.patch.SinOsc.frequency.value = CS.mtof(this.frequency);
+	this.patch.SinOsc.connect(this.patch.Gain);
+	this.patch.SinOsc.noteOn(0);
+
+	this.patch.Gain.connect(context.destination);
+
+	this.patch.SinOsc.connect(this.patch.DynDelay1.input);
+	this.patch.DynDelay1.connect(this.patch.Gain);
+	this.patch.DynDelay1.connect(this.patch.DynDelay2.input);
+	this.patch.DynDelay2.connect(this.patch.Gain);
+	this.patch.DynDelay2.connect(this.patch.DynDelay3.input);
+	this.patch.DynDelay3.connect(this.patch.Gain);
+	this.patch.DynDelay3.connect(this.patch.DynDelay4.input);
+	this.patch.DynDelay4.connect(this.patch.Gain);
+	this.patch.DynDelay4.connect(this.patch.DynDelay5.input);
+	this.patch.DynDelay5.connect(this.patch.Gain);
 }
 
 function log(value) {
