@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+
+  window.AudioContext = (
+    window.AudioContext ||
+    window.webkitAudioContext ||
+    null
+  );
+
+  if (!AudioContext) {
+    throw new Error("AudioContext not supported!");
+  } 
+
+// Create a new audio context.
+  var context = new AudioContext();
+
+  var sinosc = context.createOscillator();
+  var gain = context.createGainNode();
+  var panner = context.createPanner();
+  var delay = context.createDelayNode(5);
+  var feedbackgain = context.createGainNode();
+
+  panner.setPosition(5,0.1,0.1);
+  panner.connect(context.destination);
+  sinosc.connect(panner);
+  
+  sinosc.frequency.value = 440;
+  sinosc.noteOn(0);
+
+
+</script>
+</head>
+<body>
+</body>
+</html>

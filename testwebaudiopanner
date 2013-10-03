@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+</script>
+  try {
+    // Fix up for prefixing
+    context = new webkitAudioContext(); // trying to get context
+  }
+  catch(e) {
+    alert('Web Audio API is not supported in this browser');
+  }
+</head>
+<body>
+</body>
+</html>

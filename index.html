@@ -10,19 +10,23 @@
 </HEAD>
 <BODY>
 
-<div id="display"> reading head position is ramped to 
+<!-- <div id="display"> reading head position is ramped to 
 <h1 id="delayLength">...</h1>
 in <h1 id="duration">...</h1> seconds.
-</div>
-
-<canvas id="delayPosition"></canvas>
-
+</div> -->
 <div id="anchor">
 	<div id="comment">
-		<h1> sinewave sent through two feedback loops </h1>
-		<p> change the frequency and gain of the sinewave with the GUI in the top right corner. </p>
-		<p> the position in the delaylines is changed over time automatically. </p>
+		<h1> sinewave & 5 dynamic feedback delays </h1>
+		<p> The readpoints in the delay lines are picked randomly between 3 possible values and so are the durations the readhead takes to go to the point.</p>
+		<p>With the GUI you control:</p>
+		<ul>
+			<li> freq of sinewave </li>
+			<li> gain of the sinewave </li>
+			<li> poossible read positions (readpoint 1,2 & 3) </li>
+			<li> [ossible durations to get to these (duration 1,2 & 3) </li>
+		</ul>
 	</div>
 </div>
+<canvas id="delayPosition"></canvas>
 </BODY>
 </HTML>
