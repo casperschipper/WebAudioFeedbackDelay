@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <HTML>
 <HEAD>
-<TITLE>webaudio test</TITLE>
+<TITLE>sinewave & five delay lines</TITLE>
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <SCRIPT src="js/jquery-1.10.1.min.js"></SCRIPT>
 <SCRIPT src="js/dat.gui.min.js"></SCRIPT>
@@ -16,17 +16,17 @@ in <h1 id="duration">...</h1> seconds.
 </div> -->
 <div id="anchor">
 	<div id="comment">
-		<h1> sinewave & 5 dynamic feedback delays </h1>
-		<p> The readpoints in the delay lines are picked randomly between 3 possible values and so are the durations the readhead takes to go to the point.</p>
-		<p>With the GUI you control:</p>
+		<h1> Sinewave & 5 dynamic feedback delays </h1>
+		<p> The readpoints in the delay lines are picked <b>randomly</b> between 3 possible values and so are the durations the readhead takes to go to the point.</p>
+		<p>With the sliders in the top right you control:</p>
 		<ul>
 			<li> freq of sinewave </li>
 			<li> gain of the sinewave </li>
-			<li> poossible read positions (readpoint 1,2 & 3) </li>
-			<li> [ossible durations to get to these (duration 1,2 & 3) </li>
+			<li> possible read positions (readpoint 1,2 & 3) </li>
+			<li> possible durations to get to these (duration 1,2 & 3) </li>
 		</ul>
 	</div>
+	<canvas id="delayPosition"></canvas>
 </div>
-<canvas id="delayPosition"></canvas>
 </BODY>
 </HTML>

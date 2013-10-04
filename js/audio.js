@@ -16,6 +16,8 @@ var duration3 = 2000.0;
 $(document).ready(function() {
 	window.addEventListener('load', init, false); 
 
+	console.log("test");
+
 	function init() {
 	  try {
 	    // Fix up for prefixing
