@@ -69,6 +69,8 @@ $(document).ready(function() {
 	 gui.add(SineWave, 'duration3',0.,3000.0).onChange( function(x) {
 	 	duration3 = x;
 	 }); //
+
+	 gui.add(SineWave, 'randomize');
 	
 	 var canvas = document.getElementById('delayPosition');
 	//console.log(canvas);
@@ -243,6 +245,23 @@ var playSineWave = function () {
 	this.patch.DynDelay3.connect(this.patch.DynDelay4.input);
 	this.patch.DynDelay4.connect(this.patch.DynDelay5.input);
 
+	this.randomize = function() {
+		this.readPoint1 = readPoint1 = CS.rv(0,3);
+		this.readPoint2 = readPoint2 = CS.rv(0,3);
+		this.readPoint3 = readPoint3 = CS.rv(0,3);
+
+		this.duration1 = duration1 = CS.rv(0,3000);
+		this.duration2 = duration2 = CS.rv(0,3000);
+		this.duration3 = duration3 = CS.rv(0,3000);
+
+		this.frequency = CS.rv(20,127);
+
+		this.patch.SinOsc.frequency.value = CS.mtof(this.frequency);
+
+		 for (var i in gui.__controllers) {
+    		gui.__controllers[i].updateDisplay();
+  		}
+	}
 
 }
 
