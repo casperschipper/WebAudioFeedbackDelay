@@ -1,19 +1,21 @@
-var context; // webAudioContext
 
-var mute = false; //unused
-
-var gui; // the dat.gui from google.
-
-var SineWave; // the main synth patch
-
-var readPoint1 = 0.0;
-var readPoint2 = 1.0; // global values
-var readPoint3 = 2.0; // global value
-var duration1 = 0.0;
-var duration2 = 1000.0;
-var duration3 = 2000.0;
 
 $(document).ready(function() {
+	var context; // webAudioContext
+
+	var mute = false; //unused
+
+	var gui; // the dat.gui from google.
+
+	var SineWave; // the main synth patch
+
+	var readPoint1 = 0.0;
+	var readPoint2 = 1.0; // global values
+	var readPoint3 = 2.0; // global value
+	var duration1 = 0.0;
+	var duration2 = 1000.0;
+	var duration3 = 2000.0;
+
 	window.addEventListener('load', init, false); 
 
 	console.log("test");
@@ -22,14 +24,15 @@ $(document).ready(function() {
 	  try {
 	    // Fix up for prefixing
 	    context = new webkitAudioContext() || new AudioContext(); // trying to get context
+	  	
 	  }
 	  catch(e) {
 	    alert('Web Audio API is not supported in this browser');
 	  }
 
-	  console.log(context);
-	  context.listener.setPosition(0,0,0);
-	  context.destination.channelCount = 2;
+	  //console.log(context);
+	  //context.listener.setPosition(0,0,0);
+	  //context.destination.channelCount = 2;
 
 	  // ok let's create the osc
 
@@ -124,7 +127,7 @@ $(document).ready(function() {
 	}
 
 	(function animloop(){
-	  window.webkitRequestAnimationFrame(animloop);
+	  window.requestAnimFrame(animloop);
 	  render();
 	})();
 
