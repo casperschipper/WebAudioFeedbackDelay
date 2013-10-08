@@ -244,6 +244,7 @@ var playSineWave = function () {
 	this.patch.DynDelay2.connect(this.patch.DynDelay3.input);
 	this.patch.DynDelay3.connect(this.patch.DynDelay4.input);
 	this.patch.DynDelay4.connect(this.patch.DynDelay5.input);
+	//this.patch.DynDelay5.connect(this.patch.DynDelay1.input);
 
 	this.randomize = function() {
 		this.readPoint1 = readPoint1 = CS.rv(0,3);

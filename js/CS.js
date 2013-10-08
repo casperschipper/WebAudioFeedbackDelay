@@ -14,6 +14,14 @@ var CS = {
 		} else {
 			return list;
 		}
+	},
+	generateList: function(amount,generator) {
+		var result = [];
+		while(amount--) {
+			result.push(generator());
+		}
+		return result;
 	}
+
 }
 
