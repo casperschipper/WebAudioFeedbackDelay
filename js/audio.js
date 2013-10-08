@@ -130,9 +130,9 @@ $(document).ready(function() {
 
 
 	}
-});
 
-var DynamicFeedbackDelay = function(position) {
+
+	var DynamicFeedbackDelay = function(position) {
 	this.input = context.createGainNode();
 	var output = context.createGainNode(),
 		delay = context.createDelayNode(5),
@@ -206,82 +206,84 @@ var DynamicFeedbackDelay = function(position) {
 	scheduler(delay);
 }
 
-// var Panner = function(position) {
-// 	this.input = context.createPanner();
-// 	this.input.setPosition(position,0.1,0.1);
-// 	this.input.connect(context.destination);
-// }
+	// var Panner = function(position) {
+	// 	this.input = context.createPanner();
+	// 	this.input.setPosition(position,0.1,0.1);
+	// 	this.input.connect(context.destination);
+	// }
 
-var playSineWave = function () {
-	this.patch = {
-		SinOsc : context.createOscillator(),
-		Gain : context.createGainNode(),
-		DynDelay1 : new DynamicFeedbackDelay(0),
-		DynDelay2 : new DynamicFeedbackDelay(0.25),
-		DynDelay3 : new DynamicFeedbackDelay(0.5),
-		DynDelay4 : new DynamicFeedbackDelay(0.75),
-		DynDelay5 : new DynamicFeedbackDelay(1)
-	};
+	var playSineWave = function () {
+		this.patch = {
+			SinOsc : context.createOscillator(),
+			Gain : context.createGainNode(),
+			DynDelay1 : new DynamicFeedbackDelay(0),
+			DynDelay2 : new DynamicFeedbackDelay(0.25),
+			DynDelay3 : new DynamicFeedbackDelay(0.5),
+			DynDelay4 : new DynamicFeedbackDelay(0.75),
+			DynDelay5 : new DynamicFeedbackDelay(1)
+		};
 
-	this.frequency = 60; // setting defaults
-	this.gain = 0.05;
+		this.frequency = 60; // setting defaults
+		this.gain = 0.05;
 
-	this.readPoint1 = 0.001;
-	this.readPoint2 = 1.00;
-	this.readPoint3 = 2.00;
+		this.readPoint1 = 0.001;
+		this.readPoint2 = 1.00;
+		this.readPoint3 = 2.00;
 
-	this.duration1 = 0.0;
-	this.duration2 = 1000.0;
-	this.duration3 = 2000.0;
+		this.duration1 = 0.0;
+		this.duration2 = 1000.0;
+		this.duration3 = 2000.0;
 
-	this.patch.Gain.gain.value = this.gain;
-	this.patch.SinOsc.frequency.value = CS.mtof(this.frequency);
-	this.patch.SinOsc.connect(this.patch.Gain);
-	this.patch.SinOsc.noteOn(0);
-
-	this.patch.Gain.connect(this.patch.DynDelay1.input);
-	this.patch.DynDelay1.connect(this.patch.DynDelay2.input);
-	this.patch.DynDelay2.connect(this.patch.DynDelay3.input);
-	this.patch.DynDelay3.connect(this.patch.DynDelay4.input);
-	this.patch.DynDelay4.connect(this.patch.DynDelay5.input);
-	//this.patch.DynDelay5.connect(this.patch.DynDelay1.input);
-
-	this.randomize = function() {
-		this.readPoint1 = readPoint1 = CS.rv(0,3);
-		this.readPoint2 = readPoint2 = CS.rv(0,3);
-		this.readPoint3 = readPoint3 = CS.rv(0,3);
-
-		this.duration1 = duration1 = CS.rv(0,3000);
-		this.duration2 = duration2 = CS.rv(0,3000);
-		this.duration3 = duration3 = CS.rv(0,3000);
-
-		this.frequency = CS.rv(20,127);
-
+		this.patch.Gain.gain.value = this.gain;
 		this.patch.SinOsc.frequency.value = CS.mtof(this.frequency);
+		this.patch.SinOsc.connect(this.patch.Gain);
+		this.patch.SinOsc.noteOn(0);
 
-		 for (var i in gui.__controllers) {
-    		gui.__controllers[i].updateDisplay();
-  		}
+		this.patch.Gain.connect(this.patch.DynDelay1.input);
+		this.patch.DynDelay1.connect(this.patch.DynDelay2.input);
+		this.patch.DynDelay2.connect(this.patch.DynDelay3.input);
+		this.patch.DynDelay3.connect(this.patch.DynDelay4.input);
+		this.patch.DynDelay4.connect(this.patch.DynDelay5.input);
+		//this.patch.DynDelay5.connect(this.patch.DynDelay1.input);
+
+		this.randomize = function() {
+			this.readPoint1 = readPoint1 = CS.rv(0,3);
+			this.readPoint2 = readPoint2 = CS.rv(0,3);
+			this.readPoint3 = readPoint3 = CS.rv(0,3);
+
+			this.duration1 = duration1 = CS.rv(0,3000);
+			this.duration2 = duration2 = CS.rv(0,3000);
+			this.duration3 = duration3 = CS.rv(0,3000);
+
+			this.frequency = CS.rv(20,127);
+
+			this.patch.SinOsc.frequency.value = CS.mtof(this.frequency);
+
+			 for (var i in gui.__controllers) {
+	    		gui.__controllers[i].updateDisplay();
+	  		}
+		}
+
 	}
 
-}
+	function log(value) {
+		console.log(value);
+	}
 
-function log(value) {
-	console.log(value);
-}
+	function prettyFloat(value) {
+		return String(value).substr(0,6);
+	}
 
-function prettyFloat(value) {
-	return String(value).substr(0,6);
-}
+	window.requestAnimFrame = (function(){
+	  return  window.requestAnimationFrame       ||
+	          window.webkitRequestAnimationFrame ||
+	          window.mozRequestAnimationFrame    ||
+	          function( callback ){
+	            window.setTimeout(callback, 1000 / 60);
+	          };
+	})();
+});
 
-window.requestAnimFrame = (function(){
-  return  window.requestAnimationFrame       ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame    ||
-          function( callback ){
-            window.setTimeout(callback, 1000 / 60);
-          };
-})();
 
 
 
