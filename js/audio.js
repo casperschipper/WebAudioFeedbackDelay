@@ -55,11 +55,11 @@ $(document).ready(function() {
 
 	 gui.add(SineWave, 'readPoint2',0.0,3.).onChange( function(x) {
 	 	readPoint2 = x;
-	 }); // create a fader for frequency in the gui.
+	 }); 
 
 	 gui.add(SineWave, 'readPoint3',0.0,3.).onChange( function(x) {
 	 	readPoint3 = x;
-	 }); // create a fader for frequency in the gui.
+	 }); 
 
 	 gui.add(SineWave, 'duration1',0,3000.0).onChange( function(x) {
 	 	duration1 = x;
@@ -76,7 +76,6 @@ $(document).ready(function() {
 	 gui.add(SineWave, 'randomize');
 	
 	 var canvas = document.getElementById('delayPosition');
-	//console.log(canvas);
 	
 	var graphContext = canvas.getContext('2d');
 
