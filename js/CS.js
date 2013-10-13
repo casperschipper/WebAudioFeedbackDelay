@@ -21,6 +21,9 @@ var CS = {
 			result.push(generator());
 		}
 		return result;
+	},
+	ev: function(alpha) {
+		return Math.log( 1 - (Math.random()) / (-alpha));
 	}
 
 
