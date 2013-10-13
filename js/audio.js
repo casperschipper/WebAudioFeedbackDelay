@@ -260,7 +260,7 @@ $(document).ready(function() {
 			var result = 0;
 			switch(choice) {
 				case "small": {
-					result = cs.rv(a,b) * cs.wchoice([[0.001,1],[1,4]]); //quantized
+					result = cs.rv(a,b) * cs.wchoice([[0.001,4],[1,1]]); //quantized
 					break;
 				} 
 				case "normal": {
